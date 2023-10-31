@@ -132,6 +132,20 @@ class ImageRecorder(object):
         if border_only:
             for j in range(Px.shape[0]):
                 cv2.circle(frame, (int(Px[j]), int(Py[j])), 2, color)
+
+            parsedPoints = []
+            for i in range(len(Px)):
+                parsedPoints.append([int(Px[i]), int(Py[i])])
+
+            ctr = np.array(parsedPoints).reshape((-1, 1, 2)).astype(np.int32)
+            testimage = cv2.drawContours(frame, ctr, 0, (0, 255, 0), 10)
+            #cv2.imshow("test", testimage)
+            #cv2.waitKey(0)
+            x, y, w, h = cv2.boundingRect(ctr)
+            pt1 = (int(x), int(y))
+            pt2 = (int(x+w), int(y+h))
+            cv2.rectangle(testimage, pt1, pt2, (0,0,255), 3)
+            #cv2.imshow("result", testimage)
         else:
             for i in range(Px.shape[0]):
                 for j in range(Px.shape[1]):
