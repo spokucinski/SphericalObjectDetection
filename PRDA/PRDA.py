@@ -88,6 +88,14 @@ def visualization(img, new_gt, erp_w=1024, erp_h=512):
     Px, Py = ro_Shpbbox(new_gt, Px, Py, erp_w=erp_w, erp_h=erp_h)
     BFoV.draw_BFoV(img, Px, Py, border_only=True, color=[0, 0, 255])
 
+def getBBoxCoords(new_gt, erp_w, erp_h):
+    
+    BFoV = ImageRecorder(erp_w, erp_h, view_angle_w=new_gt[0][2], view_angle_h=new_gt[0][3],
+                         long_side=erp_w)
+    Px, Py = BFoV._sample_points(new_gt[0][0], new_gt[0][1], border_only=True)
+    Px, Py = ro_Shpbbox(new_gt, Px, Py, erp_w=erp_w, erp_h=erp_h)
+    
+    return (min(Px), min(Py), max(Px), max(Py))
 
 if __name__ == '__main__':
     # Get image and RBFoV
